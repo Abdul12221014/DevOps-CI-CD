@@ -32,7 +32,7 @@ pipeline {
         stage('Push Docker Images') {
             steps {
                 script {
-                    docker.withRegistry('', 'dockerhub-credentials') {
+                    docker.withRegistry('', 'dockerhub-credentials') { -> // Explicitly define a closure
                         docker.image(DOCKER_IMAGE_FRONTEND).push()
                         docker.image(DOCKER_IMAGE_BACKEND).push()
                     }
