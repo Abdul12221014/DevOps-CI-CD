@@ -39,13 +39,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy') {
-            steps {
-                script {
-                    // Add your deployment steps (e.g., deploy to AWS/GCP/Render)
-                }
-            }
-        }
     }
 }
