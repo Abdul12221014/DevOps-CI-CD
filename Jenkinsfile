@@ -1,28 +1,51 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        sh 'docker-compose build'
-      }
+    agent any
+
+    environment {
+        DOCKER_IMAGE_FRONTEND = "abdul12221014/frontend:latest"
+        DOCKER_IMAGE_BACKEND = "abdul12221014/backend:latest"
     }
-    stage('Test') {
-      steps {
-        sh 'docker-compose up -d && sleep 10 && docker ps'
-      }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/Abdul12221014/DevOps-CI-CD.git'
+            }
+        }
+
+        stage('Build Frontend Docker Image') {
+            steps {
+                script {
+                    docker.build(DOCKER_IMAGE_FRONTEND, '-f Dockerfile .')
+                }
+            }
+        }
+
+        stage('Build Backend Docker Image') {
+            steps {
+                script {
+                    docker.build(DOCKER_IMAGE_BACKEND, '-f backend/Dockerfile .')
+                }
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                script {
+                    docker.withRegistry('', 'dockerhub-credentials') {
+                        docker.image(DOCKER_IMAGE_FRONTEND).push()
+                        docker.image(DOCKER_IMAGE_BACKEND).push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Add your deployment steps (e.g., deploy to AWS/GCP/Render)
+                }
+            }
+        }
     }
-    stage('Lint') {
-      steps {
-        sh 'echo "Add eslint/prettier commands here"'
-      }
-    }
-    stage('Deploy') {
-      when {
-        branch 'main'
-      }
-      steps {
-        sh 'echo "Push to Render/GitHub trigger handles deploy"'
-      }
-    }
-  }
 }
