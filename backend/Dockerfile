@@ -1,18 +1,18 @@
-# Step 1: Use the official Node.js image from Docker Hub
+# Use official Node.js image
 FROM node:14
 
-# Step 2: Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Step 3: Copy package.json and install dependencies
-COPY backend/package*.json ./
+# Copy backend package files and install
+COPY package*.json ./
 RUN npm install
 
-# Step 4: Copy the rest of the application
-COPY backend/ ./
+# Copy the rest of the backend code
+COPY . .
 
-# Step 5: Expose the port the app runs on
+# Expose backend port
 EXPOSE 5000
 
-# Step 6: Define the command to run your application
+# Start the backend server
 CMD ["npm", "start"]
