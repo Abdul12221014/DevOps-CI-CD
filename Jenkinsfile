@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/Abdul12221014/DevOps-CI-CD.git'
+                git branch: 'main', url: 'https://github.com/Abdul12221014/DevOps-CI-CD.git'
             }
         }
 
